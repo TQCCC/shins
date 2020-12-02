@@ -1,4843 +1,693 @@
 {
-    "schemes": [],
-    "swagger": "2.0",
+    "openapi": "3.0.1",
     "info": {
-        "description": "",
-        "title": "team3-cloud-bigdata",
-        "contact": {
-            "name": "API Support"
-        },
-        "license": {
-            "name": "license name"
-        },
-        "version": "0.3.0"
+        "title": "报告生成 API",
+        "description": "报告生成api服务",
+        "version": "1.4.8"
     },
-    "host": "localhost:8000",
-    "basePath": "/",
+    "servers": [
+        {
+            "url": "http://gateway.cac7d791610d6444899e9153f4f3a74d7.cn-beijing.alicontainer.com",
+            "description": "Generated server url"
+        }
+    ],
     "paths": {
-        "/api": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "home"
-                ],
-                "summary": "hello",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/api/json/marshal": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "home"
-                ],
-                "summary": "json marshal",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "default golang err",
-                        "name": "type",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/controller.JsonSample"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/api/json/unmarshal": {
+        "/word/preview": {
             "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
                 "tags": [
-                    "home"
+                    "word-controller"
                 ],
-                "summary": "json unmarshal",
+                "description": "预览图表",
+                "operationId": "preview",
                 "parameters": [
                     {
-                        "description": "请求体",
-                        "name": "data",
-                        "in": "body",
+                        "name": "templateUrl",
+                        "in": "query",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controller.JsonReqSample"
+                            "type": "string"
                         }
                     }
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ParagraphWrapper"
+                            }
+                        }
+                    },
+                    "required": true
+                },
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
+                        "description": "data中为html代码",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultString"
                                 }
-                            ]
+                            }
                         }
                     }
                 }
             }
         },
-        "/enum/jobstatuslist": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
+        "/word": {
+            "post": {
                 "tags": [
-                    "segEnum"
+                    "word-controller"
                 ],
-                "summary": "任务状态字典值",
+                "operationId": "word",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestPayload"
+                            }
+                        }
+                    },
+                    "required": true
+                },
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/constants.StatusEnum"
-                                            }
-                                        }
-                                    }
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultString"
                                 }
-                            ]
+                            }
                         }
                     }
                 }
             }
         },
-        "/enum/postlist": {
+        "/download/oss": {
             "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
                 "tags": [
-                    "segEnum"
+                    "download-controller"
                 ],
-                "summary": "词性字典值",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "array",
-                                                "items": {
-                                                    "type": "string"
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/enum/searchjob/esqueryfulltextfieldlist": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "segEnum"
-                ],
-                "summary": "ES业务可全文搜索字段字典值",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "object",
-                                            "additionalProperties": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/enum/searchjob/esquerysortlist": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "segEnum"
-                ],
-                "summary": "ES业务可排序字段字典值",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "object",
-                                            "additionalProperties": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/enum/searchjob/essegfieldlist": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "segEnum"
-                ],
-                "summary": "ES业务可分词字段字典值",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "object",
-                                            "additionalProperties": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/enum/searchjob/indexnamelist": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "segEnum"
-                ],
-                "summary": "ES业务索引字典值",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "object",
-                                            "additionalProperties": {
-                                                "allOf": [
-                                                    {
-                                                        "type": "object"
-                                                    },
-                                                    {
-                                                        "type": "object",
-                                                        "properties": {
-                                                            "name": {
-                                                                "type": "string"
-                                                            },
-                                                            "type": {
-                                                                "type": "string"
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/keyword/job": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "segKeyword"
-                ],
-                "summary": "任务详情",
+                "operationId": "oss",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "id",
-                        "name": "id",
+                        "name": "url",
                         "in": "query",
-                        "required": true
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/objs.KeyWordJobInfo"
-                                        }
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "format": "byte"
                                     }
                                 }
-                            ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/converter/word2html": {
+            "post": {
+                "tags": [
+                    "converter-controller"
+                ],
+                "operationId": "word2html",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Word2HtmlRequestPayload"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultString"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/converter/template": {
+            "get": {
+                "tags": [
+                    "converter-controller"
+                ],
+                "operationId": "template",
+                "parameters": [
+                    {
+                        "name": "url",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "format": "byte"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/converter/word2html/rich": {
+            "post": {
+                "tags": [
+                    "converter-controller"
+                ],
+                "operationId": "word2htmlRich",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Word2HtmlRequestPayload"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultString"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/converter/parseWord": {
+            "get": {
+                "tags": [
+                    "converter-controller"
+                ],
+                "operationId": "parseWord",
+                "parameters": [
+                    {
+                        "name": "url",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultListWordTemplateSubstitution"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ChartReportParagraph": {
+                "type": "object",
+                "description": "图表类型段落",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/ReportParagraph"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "chartXlsxTemplateUrl": {
+                                "type": "string"
+                            },
+                            "reportChartType": {
+                                "type": "string",
+                                "enum": [
+                                    "ZHUXINGTU",
+                                    "ZHEXIANTU",
+                                    "DUIJIZHEXIANTU",
+                                    "BINGTU",
+                                    "TIAOXINGTU",
+                                    "SANDIANTU",
+                                    "ZHEXIANZHUXINGTU",
+                                    "DUIJIZHUXINGTU",
+                                    "YUANHUANTU",
+                                    "UNKNOWN"
+                                ]
+                            },
+                            "data": {
+                                "type": "array",
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object"
+                                    }
+                                }
+                            },
+                            "style": {
+                                "$ref": "#/components/schemas/ChartReportParagraphStyle"
+                            }
+                        }
+                    }
+                ]
+            },
+            "ChartReportParagraphStyle": {
+                "type": "object",
+                "properties": {
+                    "alignment": {
+                        "type": "string",
+                        "description": "居左，居中，居右",
+                        "enum": [
+                            "LEFT",
+                            "CENTER",
+                            "RIGHT"
+                        ]
+                    },
+                    "width": {
+                        "type": "number",
+                        "description": "word里面的图表的宽，单位厘米",
+                        "format": "double"
+                    },
+                    "height": {
+                        "type": "number",
+                        "description": "word里面的图表的高，单位厘米",
+                        "format": "double"
+                    }
+                }
+            },
+            "ImageReportParagraph": {
+                "type": "object",
+                "description": "图片类型段落",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/ReportParagraph"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "urls": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "style": {
+                                "$ref": "#/components/schemas/ImageReportParagraphStyle"
+                            }
+                        }
+                    }
+                ]
+            },
+            "ImageReportParagraphStyle": {
+                "type": "object",
+                "properties": {
+                    "alignment": {
+                        "type": "string",
+                        "description": "居左，居中，居右",
+                        "enum": [
+                            "LEFT",
+                            "CENTER",
+                            "RIGHT"
+                        ]
+                    },
+                    "width": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "height": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "separator": {
+                        "type": "string"
+                    }
+                }
+            },
+            "MergeFieldData": {
+                "type": "object",
+                "properties": {
+                    "fields": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "values": {
+                        "type": "array",
+                        "items": {
+                            "type": "object"
                         }
                     }
                 }
             },
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
+            "ParagraphWrapper": {
+                "required": [
+                    "type"
                 ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "segKeyword"
-                ],
-                "summary": "提交任务（返回提交任务的id）",
-                "parameters": [
-                    {
-                        "description": "request",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/objs.KeyWordAddJobRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/keyword/job/update": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "segKeyword"
-                ],
-                "summary": "更新任务",
-                "parameters": [
-                    {
-                        "description": "request",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/objs.KeyWordUpdateJobRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "integer"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/oss/get": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/octet-stream"
-                ],
-                "tags": [
-                    "oss"
-                ],
-                "summary": "下载文件",
-                "parameters": [
-                    {
+                "type": "object",
+                "properties": {
+                    "type": {
                         "type": "string",
-                        "description": "file key or url",
-                        "name": "url",
-                        "in": "query",
-                        "required": true
+                        "description": "报告段落类型",
+                        "example": "TEXT",
+                        "enum": [
+                            "TEXT",
+                            "CHART",
+                            "IMAGE",
+                            "TABLE"
+                        ]
                     },
-                    {
-                        "type": "string",
-                        "description": "是否移除key的后缀",
-                        "name": "o",
-                        "in": "query"
+                    "value": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/ChartReportParagraph"
+                            },
+                            {
+                                "$ref": "#/components/schemas/ImageReportParagraph"
+                            },
+                            {
+                                "$ref": "#/components/schemas/TableReportParagraph"
+                            },
+                            {
+                                "$ref": "#/components/schemas/TextReportParagraph"
+                            }
+                        ]
                     }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "file"
-                        }
-                    }
-                }
-            }
-        },
-        "/oss/get/batch": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/octet-stream"
-                ],
-                "tags": [
-                    "oss"
-                ],
-                "summary": "下载zip",
-                "parameters": [
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "multi",
-                        "description": "file keys or urls",
-                        "name": "url",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "是否移除key的后缀",
-                        "name": "o",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "file"
-                        }
-                    }
-                }
-            }
-        },
-        "/oss/upload": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "oss"
-                ],
-                "summary": "upload file",
-                "parameters": [
-                    {
-                        "type": "file",
-                        "description": "the upload file",
-                        "name": "upload",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/oss/upload/docxToTxt": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "oss"
-                ],
-                "summary": "上传word，转为txt",
-                "parameters": [
-                    {
-                        "type": "file",
-                        "description": "the upload file",
-                        "name": "upload",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/column_type": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportEnum"
-                ],
-                "summary": "列数据类型",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/constants.TypeEnum"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/logic_type": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportEnum"
-                ],
-                "summary": "逻辑类型",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/constants.TypeEnum"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_bookmark/raw": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/octet-stream"
-                ],
-                "tags": [
-                    "reportBookmark"
-                ],
-                "summary": "已弃用，转为使用：GET /report/report_field/file",
-                "deprecated": true,
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "书签id",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "file"
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_bookmark/upload": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportBookmark"
-                ],
-                "summary": "已弃用，转为使用：POST /report/report_field/upload_file",
-                "deprecated": true,
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "id",
-                        "name": "id",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "file",
-                        "description": "文件，不传则表示删除此书签的文件",
-                        "name": "file",
-                        "in": "formData"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/common.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_excel": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportExcel"
-                ],
-                "summary": "添加excel数据文件",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "项目id",
-                        "name": "projectId",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "file",
-                        "description": "文件",
-                        "name": "file",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
+                },
+                "description": "报告段落包装类"
             },
-            "delete": {
-                "security": [
+            "ReportParagraph": {
+                "type": "object",
+                "properties": {
+                    "bookmark": {
+                        "type": "string"
+                    }
+                },
+                "description": "报告段落内容"
+            },
+            "TableReportParagraph": {
+                "type": "object",
+                "description": "表格类型段落",
+                "allOf": [
                     {
-                        "AuthorizationHeader": []
+                        "$ref": "#/components/schemas/ReportParagraph"
                     },
                     {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportExcel"
-                ],
-                "summary": "删除excel",
-                "parameters": [
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "multi",
-                        "description": "excel id",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/common.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_excel/info": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportExcel"
-                ],
-                "summary": "信息",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "excel id",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/report_controller.ExcelInfoVo"
-                                        }
+                        "type": "object",
+                        "properties": {
+                            "data": {
+                                "type": "array",
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object"
                                     }
                                 }
-                            ]
+                            }
                         }
                     }
-                }
-            }
-        },
-        "/report/report_excel/page": {
-            "post": {
-                "security": [
+                ]
+            },
+            "TextReportParagraph": {
+                "type": "object",
+                "description": "文本类型段落",
+                "allOf": [
                     {
-                        "AuthorizationHeader": []
+                        "$ref": "#/components/schemas/ReportParagraph"
                     },
                     {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportExcel"
-                ],
-                "summary": "分页",
-                "parameters": [
-                    {
-                        "description": "请求体",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/report.ExcelPageCondition"
+                        "type": "object",
+                        "properties": {
+                            "style": {
+                                "$ref": "#/components/schemas/TextReportParagraphStyle"
+                            },
+                            "content": {
+                                "type": "string"
+                            },
+                            "fieldData": {
+                                "$ref": "#/components/schemas/MergeFieldData"
+                            }
                         }
                     }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/report_service.ExcelPageResp"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_excel/raw": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/octet-stream"
-                ],
-                "tags": [
-                    "reportExcel"
-                ],
-                "summary": "excel数据模板下载",
-                "parameters": [
-                    {
+                ]
+            },
+            "TextReportParagraphFont": {
+                "type": "object",
+                "properties": {
+                    "fontFamily": {
                         "type": "string",
-                        "description": "excel id",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "file"
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_excel/sheet/list": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
+                        "description": "字体"
                     },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportExcel"
-                ],
-                "summary": "获取数据文件中Sheet信息列表",
-                "parameters": [
-                    {
+                    "fontSize": {
+                        "type": "number",
+                        "description": "字号，默认16磅，即三号字体",
+                        "format": "double"
+                    },
+                    "chineseFontSize": {
                         "type": "string",
-                        "description": "excel id",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "所有sheet信息",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/report_controller.ExcelSheetVo"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_excel/update": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
+                        "description": "中文字号，优先级高于fontSize",
+                        "enum": [
+                            "初号",
+                            "小初",
+                            "一号",
+                            "小一",
+                            "二号",
+                            "小二",
+                            "三号",
+                            "小三",
+                            "四号",
+                            "小四",
+                            "五号",
+                            "小五",
+                            "六号",
+                            "小六",
+                            "七号",
+                            "八号"
+                        ]
                     },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportExcel"
-                ],
-                "summary": "更新excel",
-                "parameters": [
-                    {
+                    "fontColor": {
                         "type": "string",
-                        "description": "excel id",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
+                        "description": "字体颜色，只支持黑色，红色和黄色",
+                        "enum": [
+                            "BLACK",
+                            "RED",
+                            "YELLOW"
+                        ]
                     },
-                    {
-                        "type": "file",
-                        "description": "the excel file",
-                        "name": "file",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/common.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_field/chart/value": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportField"
-                ],
-                "summary": "图表类占位符值查询",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "fieldId",
-                        "name": "fieldId",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "data中为包含图片base64的img标签",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_field/count_info": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportField"
-                ],
-                "summary": "数量信息",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "word id",
-                        "name": "wordId",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "MERGEFIELD、IMAGE、TABLE、CHART",
-                        "name": "substitutionType",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/report_controller.FieldCountInfoVo"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_field/file": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/octet-stream"
-                ],
-                "tags": [
-                    "reportField"
-                ],
-                "summary": "文件下载",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "id",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "file"
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_field/info": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportField"
-                ],
-                "summary": "详情",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "field id",
-                        "name": "fieldId",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/report_controller.FieldInfoVo"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_field/list": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportField"
-                ],
-                "summary": "列表数据",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "word id",
-                        "name": "wordId",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "MERGEFIELD、IMAGE、TABLE、CHART",
-                        "name": "substitutionType",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
+                    "isBold": {
                         "type": "boolean",
-                        "description": "是否有引用",
-                        "name": "hasRel",
-                        "in": "query"
+                        "description": "是否加粗，默认false"
                     }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/report_controller.FieldItemVo"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_field/rel_cell": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportField"
-                ],
-                "summary": "创建引用单元格",
-                "parameters": [
-                    {
-                        "description": "请求体",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/report.FieldUpdateRelCellReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_field/rel_cell/chart": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportField"
-                ],
-                "summary": "图表类占位符设置引用接口",
-                "parameters": [
-                    {
-                        "description": "请求参数",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/report_controller.FieldUpdateRelCellTableChartReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "data中为包含图片base64的img标签",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_field/rel_cell/column_loop": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportField"
-                ],
-                "summary": "按列名循环取值设置邮件合并域引用接口",
-                "parameters": [
-                    {
-                        "description": "请求参数",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/report_controller.FieldColumnLoopAddReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/common.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_field/rel_cell/filter_sort": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportField"
-                ],
-                "summary": "按筛选排序取值类型设置邮件合并域引用接口",
-                "parameters": [
-                    {
-                        "description": "请求参数",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/report_controller.FieldFilterSortAddReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/report_controller.FieldFilterSortAddResult"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_field/rel_cell/table": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportField"
-                ],
-                "summary": "表格类占位符设置引用接口",
-                "parameters": [
-                    {
-                        "description": "请求参数",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/report_controller.FieldUpdateRelCellTableChartReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/report_controller.FieldUpdateRelCellTableChartResult"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_field/table/value": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportField"
-                ],
-                "summary": "表格类占位符值查询",
-                "parameters": [
-                    {
+                },
+                "description": "设置字体样式"
+            },
+            "TextReportParagraphStyle": {
+                "type": "object",
+                "properties": {
+                    "alignment": {
                         "type": "string",
-                        "description": "fieldId",
-                        "name": "fieldId",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/report_controller.FieldUpdateRelCellTableChartResult"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_field/upload_file": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
+                        "description": "居左，居中，居右",
+                        "enum": [
+                            "LEFT",
+                            "CENTER",
+                            "RIGHT"
+                        ]
                     },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportField"
-                ],
-                "summary": "上传文件（用于图片）",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "id",
-                        "name": "id",
-                        "in": "formData",
-                        "required": true
+                    "font": {
+                        "$ref": "#/components/schemas/TextReportParagraphFont"
                     },
-                    {
-                        "type": "file",
-                        "description": "文件，不传则表示删除此文件",
-                        "name": "file",
-                        "in": "formData"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/common.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_project": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
+                    "lineSpacing": {
+                        "type": "number",
+                        "description": "设置行距，单位磅，默认单倍行距，即12磅",
+                        "format": "double"
                     },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportProject"
-                ],
-                "summary": "创建项目",
-                "parameters": [
-                    {
-                        "description": "请求体",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/report.ProjectAddReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
+                    "indent": {
+                        "type": "number",
+                        "description": "设置首行缩进，单位磅",
+                        "format": "double"
+                    },
+                    "inline": {
+                        "type": "boolean",
+                        "description": "如果inline为true，表示不换行"
                     }
                 }
             },
-            "delete": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportProject"
-                ],
-                "summary": "删除项目",
-                "parameters": [
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "multi",
-                        "description": "项目id",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/common.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_project/copy": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportProject"
-                ],
-                "summary": "复制项目",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "项目id",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_project/info": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportProject"
-                ],
-                "summary": "项目信息",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "项目id",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/report_controller.ProjectInfoVo"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_project/page": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportProject"
-                ],
-                "summary": "分页",
-                "parameters": [
-                    {
-                        "description": "request",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/report.ProjectPageCondition"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/report_service.ProjectPageResp"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_project/update": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportProject"
-                ],
-                "summary": "更新项目",
-                "parameters": [
-                    {
-                        "description": "请求体",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/report.ProjectUpdateReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/common.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_sheet/column_data/list": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportSheet"
-                ],
-                "summary": "列数据列表查询接口",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "工作簿 id",
-                        "name": "sheetId",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "列名称",
-                        "name": "columnName",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "sheetId指定的工作表中columnName列的所有数据",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_sheet/column_name/list": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportSheet"
-                ],
-                "summary": "工作表列字段列表接口",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "工作簿 id",
-                        "name": "sheetId",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "通过工作表ID返回该工作表的列头字段名称列表，全量返回",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_sheet/content": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportSheet"
-                ],
-                "summary": "根据sheetId获取数据文件内容",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "工作簿 id",
-                        "name": "sheetId",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "sheetId指定的工作表中的所有数据",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "array",
-                                                "items": {
-                                                    "type": "string"
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_sheet/filter_data": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportSheet"
-                ],
-                "summary": "根据筛选条件返回筛选后内容",
-                "parameters": [
-                    {
-                        "description": "请求参数",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/report_controller.SheetFilterDataReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "返回筛选后内容",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "array",
-                                                "items": {
-                                                    "type": "string"
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_sheet/filter_data/count": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportSheet"
-                ],
-                "summary": "根据筛选条件返回筛选后行数接口",
-                "parameters": [
-                    {
-                        "description": "请求参数",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/report_controller.SheetFilterDataReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "返回筛选后所剩行数",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "integer"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_sheet/filter_data/raw": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/octet-stream"
-                ],
-                "tags": [
-                    "reportSheet"
-                ],
-                "summary": "根据筛选条件返回筛选后下载excel",
-                "parameters": [
-                    {
-                        "description": "请求参数",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/report_controller.SheetFilterDataReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "返回筛选后内容",
-                        "schema": {
-                            "$ref": "#/definitions/common.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_word": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportWord"
-                ],
-                "summary": "添加报告模板",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "项目id",
-                        "name": "projectId",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "file",
-                        "description": "文件",
-                        "name": "file",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportWord"
-                ],
-                "summary": "删除word",
-                "parameters": [
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "multi",
-                        "description": "word id",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/common.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_word/copy": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportWord"
-                ],
-                "summary": "复制",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "word id",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_word/download": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/octet-stream"
-                ],
-                "tags": [
-                    "reportWord"
-                ],
-                "summary": "报告生成下载",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "报告id",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "file"
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_word/field/check": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportWord"
-                ],
-                "summary": "检查word域引用是否已完成",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "word id",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "boolean"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_word/highlight": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportWord"
-                ],
-                "summary": "html高亮",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "word id",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "multi",
-                        "description": "高亮变量",
-                        "name": "field",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_word/page": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportWord"
-                ],
-                "summary": "分页",
-                "parameters": [
-                    {
-                        "description": "筛选条件",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/report.WordPageCondition"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/report_service.WordPageResp"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_word/raw": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/octet-stream"
-                ],
-                "tags": [
-                    "reportWord"
-                ],
-                "summary": "报告模板下载",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "word id",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "file"
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_word/template": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/octet-stream"
-                ],
-                "tags": [
-                    "reportWord"
-                ],
-                "summary": "报告模板示例下载",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "file"
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_word/update": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportWord"
-                ],
-                "summary": "更新word",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "word id",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "file",
-                        "description": " ",
-                        "name": "file",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/common.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_word_filter/list": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportWordFilter"
-                ],
-                "summary": "查询报告关联的数据表的行筛选条件接口",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "word id",
-                        "name": "wordId",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/report_controller.WordFilterListVo"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/report_word_filter/update": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportWordFilter"
-                ],
-                "summary": "更新报告关联的数据表的行筛选条件接口",
-                "parameters": [
-                    {
-                        "description": "请求参数",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/report_controller.WordFilterUpdateReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/report/var_field_type": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "reportEnum"
-                ],
-                "summary": "字符型域取值类型",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/constants.TypeEnum"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/txtjob/file/job": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "segJob"
-                ],
-                "summary": "add file txt job",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "name",
-                        "name": "name",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "pos",
-                        "name": "pos",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
+            "ResultString": {
+                "type": "object",
+                "properties": {
+                    "code": {
                         "type": "integer",
-                        "description": "min length",
-                        "name": "minLength",
-                        "in": "formData",
-                        "required": true
+                        "description": "返回标记：成功标记=0，失败标记=1",
+                        "format": "int32"
                     },
-                    {
-                        "type": "file",
-                        "description": "file",
-                        "name": "upload",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
+                    "msg": {
+                        "type": "string",
+                        "description": "返回信息"
+                    },
+                    "data": {
+                        "type": "string",
+                        "description": "数据"
                     }
                 }
-            }
-        },
-        "/txtjob/job": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
+            },
+            "ReportPage": {
+                "type": "object",
+                "properties": {
+                    "orientationType": {
+                        "type": "string",
+                        "description": "页面是横向还是纵向",
+                        "enum": [
+                            "HORIZONTAL",
+                            "VERTICAL"
+                        ]
                     },
-                    {
-                        "IssuerHeader": []
+                    "paperSizeType": {
+                        "type": "string",
+                        "description": "页面纸张大小",
+                        "enum": [
+                            "A3",
+                            "A4",
+                            "A5",
+                            "B4",
+                            "B5"
+                        ]
+                    },
+                    "topMargin": {
+                        "type": "number",
+                        "description": "页面上边距，单位厘米",
+                        "format": "double"
+                    },
+                    "bottomMargin": {
+                        "type": "number",
+                        "description": "页面下边距，单位厘米",
+                        "format": "double"
+                    },
+                    "leftMargin": {
+                        "type": "number",
+                        "description": "页面左边距，单位厘米",
+                        "format": "double"
+                    },
+                    "rightMargin": {
+                        "type": "number",
+                        "description": "页面右边距，单位厘米",
+                        "format": "double"
                     }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "segJob"
-                ],
-                "summary": "add txt job",
-                "parameters": [
-                    {
-                        "description": "request",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/objs.AddTxtJobReq"
+                }
+            },
+            "RequestPayload": {
+                "type": "object",
+                "properties": {
+                    "templateUrl": {
+                        "type": "string"
+                    },
+                    "reportFileName": {
+                        "type": "string"
+                    },
+                    "paragraphList": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ParagraphWrapper"
                         }
+                    },
+                    "reportPage": {
+                        "$ref": "#/components/schemas/ReportPage"
                     }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
+                }
+            },
+            "Word2HtmlRequestPayload": {
+                "type": "object",
+                "properties": {
+                    "downloadUrl": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ResultListWordTemplateSubstitution": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "description": "返回标记：成功标记=0，失败标记=1",
+                        "format": "int32"
+                    },
+                    "msg": {
+                        "type": "string",
+                        "description": "返回信息"
+                    },
+                    "data": {
+                        "type": "array",
+                        "description": "数据",
+                        "items": {
+                            "$ref": "#/components/schemas/WordTemplateSubstitution"
                         }
                     }
                 }
             },
-            "delete": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "segJob"
-                ],
-                "summary": "del seg job",
-                "parameters": [
-                    {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "multi",
-                        "description": "id to be del",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "integer"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/txtjob/page": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "segJob"
-                ],
-                "summary": "seg job page",
-                "parameters": [
-                    {
-                        "description": "request",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/objs.SegJobPageCondition"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "allOf": [
-                                                {
-                                                    "$ref": "#/definitions/page.Response"
-                                                },
-                                                {
-                                                    "type": "object",
-                                                    "properties": {
-                                                        "items": {
-                                                            "type": "array",
-                                                            "items": {
-                                                                "$ref": "#/definitions/objs.SegJobDetail"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            ]
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/txtjob/rerun": {
-            "post": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "segJob"
-                ],
-                "summary": "rerun job",
-                "parameters": [
-                    {
-                        "description": "request",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/seg_controller.SegJobRerunReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/common.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/txtjob/wordcloud": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
-                    },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "segJob"
-                ],
-                "summary": "get result",
-                "parameters": [
-                    {
+            "WordTemplateSubstitution": {
+                "type": "object",
+                "properties": {
+                    "name": {
                         "type": "string",
-                        "description": "id",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/objs.SegResult"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/who": {
-            "get": {
-                "security": [
-                    {
-                        "AuthorizationHeader": []
+                        "description": "变量名",
+                        "example": "var1"
                     },
-                    {
-                        "IssuerHeader": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "home"
-                ],
-                "summary": "user info",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/common.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "allOf": [
-                                                {
-                                                    "type": "object"
-                                                },
-                                                {
-                                                    "type": "object",
-                                                    "properties": {
-                                                        "companyId": {
-                                                            "type": "integer"
-                                                        },
-                                                        "userId": {
-                                                            "type": "integer"
-                                                        }
-                                                    }
-                                                }
-                                            ]
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        }
-    },
-    "definitions": {
-        "common.Response": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "type": "object"
-                },
-                "msg": {
-                    "type": "string"
-                }
-            }
-        },
-        "constants.StatusEnum": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "constants.TypeEnum": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "controller.JsonReqSample": {
-            "type": "object",
-            "required": [
-                "id"
-            ],
-            "properties": {
-                "createAt": {
-                    "type": "string"
-                },
-                "customName": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "roles": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "score": {
-                    "type": "number"
-                }
-            }
-        },
-        "controller.JsonSample": {
-            "type": "object",
-            "properties": {
-                "createAt": {
-                    "type": "string"
-                },
-                "customName": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "roles": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "score": {
-                    "type": "number"
-                }
-            }
-        },
-        "objs.AddTxtJobReq": {
-            "type": "object",
-            "required": [
-                "content",
-                "minLength",
-                "pos"
-            ],
-            "properties": {
-                "content": {
-                    "description": "输入文本",
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "inputUrl": {
-                    "type": "string"
-                },
-                "lineTotal": {
-                    "type": "integer"
-                },
-                "minLength": {
-                    "description": "单词字数限制",
-                    "type": "integer"
-                },
-                "name": {
-                    "description": "任务名称",
-                    "type": "string"
-                },
-                "pos": {
-                    "description": "分词词性（有字典接口）",
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "integer"
-                }
-            }
-        },
-        "objs.KeyWordAddJobRequest": {
-            "type": "object",
-            "required": [
-                "minLength",
-                "name",
-                "position",
-                "top"
-            ],
-            "properties": {
-                "delDict": {
-                    "description": "删除词词典",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
+                    "display": {
+                        "type": "string",
+                        "description": "完整变量字符串，用于前端展示",
+                        "example": "{var1}"
                     },
-                    "example": [
-                        "敏感词"
-                    ]
-                },
-                "maskOssKey": {
-                    "description": "词云图蒙版图片oss key",
-                    "type": "string",
-                    "example": "testMask.png"
-                },
-                "minLength": {
-                    "description": "保留词最少字数",
-                    "type": "integer",
-                    "example": 2
-                },
-                "name": {
-                    "description": "任务名称",
-                    "type": "string",
-                    "example": "测试关键词任务"
-                },
-                "position": {
-                    "description": "保留词词性",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "example": [
-                        "a"
-                    ]
-                },
-                "top": {
-                    "description": "提取关键词数量",
-                    "type": "integer",
-                    "example": 20
-                },
-                "txt": {
-                    "description": "待分词文本（相比txtOssKey,优先取此信息作为分词输入内容）",
-                    "type": "string",
-                    "example": "我爱北京天安门"
-                },
-                "txtOssKey": {
-                    "description": "待分词文本oss key",
-                    "type": "string",
-                    "example": "testTxt.txt"
-                },
-                "userDict": {
-                    "description": "保留词词典",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "example": [
-                        "自定义词"
-                    ]
-                }
-            }
-        },
-        "objs.KeyWordJobInfo": {
-            "type": "object",
-            "properties": {
-                "createAt": {
-                    "description": "创建时间",
-                    "type": "string"
-                },
-                "delDict": {
-                    "description": "删除词词典",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "example": [
-                        "敏感词"
-                    ]
-                },
-                "id": {
-                    "description": "id",
-                    "type": "string",
-                    "example": "brcusd8ghnnrvge84iug"
-                },
-                "maskOssKey": {
-                    "description": "词云图蒙版图片oss key",
-                    "type": "string",
-                    "example": "testMask.png"
-                },
-                "minLength": {
-                    "description": "保留词最少字数",
-                    "type": "integer",
-                    "example": 2
-                },
-                "name": {
-                    "description": "任务名称",
-                    "type": "string",
-                    "example": "测试关键词任务"
-                },
-                "position": {
-                    "description": "保留词词性",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "example": [
-                        "a"
-                    ]
-                },
-                "resultKeywordTotal": {
-                    "description": "结果保留词总数量",
-                    "type": "integer",
-                    "example": 1000
-                },
-                "resultOssKey": {
-                    "description": "分词结果oss key",
-                    "type": "string",
-                    "example": "segResult.txt"
-                },
-                "status": {
-                    "description": "状态",
-                    "type": "integer"
-                },
-                "top": {
-                    "description": "提取关键词数量",
-                    "type": "integer",
-                    "example": 20
-                },
-                "txtOssKey": {
-                    "description": "待分词文本oss key",
-                    "type": "string",
-                    "example": "testTxt.txt"
-                },
-                "userDict": {
-                    "description": "保留词词典",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "example": [
-                        "自定义词"
-                    ]
-                }
-            }
-        },
-        "objs.KeyWordUpdateJobRequest": {
-            "type": "object",
-            "required": [
-                "id"
-            ],
-            "properties": {
-                "delDict": {
-                    "description": "删除词词典",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "example": [
-                        "敏感词"
-                    ]
-                },
-                "id": {
-                    "description": "id",
-                    "type": "string",
-                    "example": "16"
-                },
-                "maskOssKey": {
-                    "description": "词云图蒙版图片oss key",
-                    "type": "string",
-                    "example": "testMask.png"
-                },
-                "resultOssKey": {
-                    "description": "分词结果oss key，用于词频调整",
-                    "type": "string",
-                    "example": "segResult.txt"
-                },
-                "top": {
-                    "description": "提取关键词数量",
-                    "type": "integer",
-                    "example": 20
-                },
-                "userDict": {
-                    "description": "保留词词典",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "example": [
-                        "自定义词"
-                    ]
-                }
-            }
-        },
-        "objs.SegJobDetail": {
-            "type": "object",
-            "properties": {
-                "createAt": {
-                    "description": "创建时间",
-                    "type": "string",
-                    "example": "2020-10-06 16:44:32"
-                },
-                "createBy": {
-                    "description": "创建人",
-                    "type": "string",
-                    "example": "王某"
-                },
-                "duration": {
-                    "description": "单位毫秒",
-                    "type": "integer",
-                    "example": 2000
-                },
-                "id": {
-                    "description": "id",
-                    "type": "string",
-                    "example": "bs1g7c59q6nomqnl35ug"
-                },
-                "inputUrl": {
-                    "description": "输入内容下载链接，传/oss/get接口可下载",
-                    "type": "string",
-                    "example": "https://surveywork-erp-test.oss-cn-beijing.aliyuncs.com/nlp_测试_bs1g7c59q6nomqnl35ug.txt"
-                },
-                "jobId": {
-                    "type": "string",
-                    "example": "bs1g7c59q6nomqnl35u0"
-                },
-                "lineTotal": {
-                    "type": "integer",
-                    "example": 10
-                },
-                "maskOssKey": {
-                    "description": "蒙版图片oss key",
-                    "type": "string",
-                    "example": "maskKey.png"
-                },
-                "minLength": {
-                    "type": "integer",
-                    "example": 2
-                },
-                "name": {
-                    "description": "任务名称",
-                    "type": "string",
-                    "example": "测试任务"
-                },
-                "outputUrl": {
-                    "type": "string",
-                    "example": "http://surveywork-erp-test.oss-cn-beijing.aliyuncs.com/bs1g7c59q6nomqnl35ug.xlsx"
-                },
-                "pos": {
-                    "type": "string",
-                    "example": "n,a"
-                },
-                "scheduleAt": {
-                    "type": "string",
-                    "example": "2020-10-06 16:44:32"
-                },
-                "status": {
-                    "description": "状态（有字典接口）",
-                    "type": "integer",
-                    "example": 200
-                },
-                "updateAt": {
-                    "description": "更新时间",
-                    "type": "string",
-                    "example": "2020-10-06 16:44:32"
-                }
-            }
-        },
-        "objs.SegJobPageCondition": {
-            "type": "object",
-            "properties": {
-                "ids": {
-                    "description": "id",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
+                    "type": {
+                        "type": "string",
+                        "description": "类型",
+                        "example": "MERGEFIELD",
+                        "enum": [
+                            "MERGEFIELD",
+                            "IMAGE",
+                            "CHART",
+                            "TABLE",
+                            "UNKNOWN"
+                        ]
                     }
                 },
-                "limit": {
-                    "type": "integer"
-                },
-                "name": {
-                    "description": "任务名称查询条件",
-                    "type": "string"
-                },
-                "offset": {
-                    "type": "integer"
-                },
-                "page": {
-                    "type": "integer"
-                },
-                "sort": {
-                    "type": "string"
-                },
-                "userId": {
-                    "description": "用户id查询条件",
-                    "type": "integer"
-                }
+                "description": "模板变量"
             }
-        },
-        "objs.SegResult": {
-            "type": "object",
-            "properties": {
-                "freq": {
-                    "description": "词频",
-                    "type": "integer",
-                    "example": 120
-                },
-                "position": {
-                    "description": "词性",
-                    "type": "string",
-                    "example": "名词"
-                },
-                "serialNo": {
-                    "description": "序号",
-                    "type": "integer",
-                    "example": 1
-                },
-                "word": {
-                    "description": "词",
-                    "type": "string",
-                    "example": "故障"
-                }
-            }
-        },
-        "page.Response": {
-            "type": "object",
-            "properties": {
-                "current": {
-                    "type": "integer"
-                },
-                "items": {
-                    "type": "object"
-                },
-                "pages": {
-                    "type": "integer"
-                },
-                "size": {
-                    "type": "integer"
-                },
-                "total": {
-                    "type": "integer"
-                }
-            }
-        },
-        "report.ExcelPageCondition": {
-            "type": "object",
-            "properties": {
-                "companyId": {
-                    "type": "integer"
-                },
-                "filename": {
-                    "description": "前綴查询",
-                    "type": "string",
-                    "example": "myData.xlsx"
-                },
-                "limit": {
-                    "type": "integer"
-                },
-                "offset": {
-                    "type": "integer"
-                },
-                "page": {
-                    "type": "integer"
-                },
-                "projectId": {
-                    "description": "项目id",
-                    "type": "string",
-                    "example": "bufq6tsgrs835m1q4mcg"
-                },
-                "sort": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "integer"
-                }
-            }
-        },
-        "report.FieldUpdateRelCellReq": {
-            "type": "object",
-            "required": [
-                "fieldId"
-            ],
-            "properties": {
-                "cellName": {
-                    "description": "如A1",
-                    "type": "string",
-                    "example": "A1"
-                },
-                "fieldId": {
-                    "description": "域id",
-                    "type": "string",
-                    "example": "bugjancgrs834p573o7g"
-                },
-                "sheetId": {
-                    "description": "sheet id，不传或者为null则表示解除",
-                    "type": "string",
-                    "example": "buvgrn4grs825i3mqkng"
-                },
-                "startC": {
-                    "description": "x轴坐标",
-                    "type": "integer",
-                    "example": 10
-                },
-                "startR": {
-                    "description": "y轴坐标",
-                    "type": "integer",
-                    "example": 10
-                }
-            }
-        },
-        "report.ProjectAddReq": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "name": {
-                    "description": "项目名称",
-                    "type": "string",
-                    "example": "项目1"
-                },
-                "note": {
-                    "description": "备注",
-                    "type": "string",
-                    "example": "备注"
-                }
-            }
-        },
-        "report.ProjectPageCondition": {
-            "type": "object",
-            "properties": {
-                "companyId": {
-                    "type": "integer"
-                },
-                "limit": {
-                    "type": "integer"
-                },
-                "name": {
-                    "description": "名称查询条件，前缀匹配",
-                    "type": "string",
-                    "example": "项目1"
-                },
-                "offset": {
-                    "type": "integer"
-                },
-                "page": {
-                    "type": "integer"
-                },
-                "sort": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "integer"
-                }
-            }
-        },
-        "report.ProjectUpdateReq": {
-            "type": "object",
-            "required": [
-                "id"
-            ],
-            "properties": {
-                "id": {
-                    "description": "项目id",
-                    "type": "string",
-                    "example": "bubrb9kgrs80lj4kj0hg"
-                },
-                "name": {
-                    "description": "项目名称",
-                    "type": "string",
-                    "example": "修改名称"
-                },
-                "note": {
-                    "description": "项目备注",
-                    "type": "string",
-                    "example": "修改备注"
-                }
-            }
-        },
-        "report.WordPageCondition": {
-            "type": "object",
-            "properties": {
-                "companyId": {
-                    "type": "integer"
-                },
-                "limit": {
-                    "type": "integer"
-                },
-                "offset": {
-                    "type": "integer"
-                },
-                "page": {
-                    "type": "integer"
-                },
-                "projectId": {
-                    "description": "项目id",
-                    "type": "string",
-                    "example": "bufq6tsgrs835m1q4mcg"
-                },
-                "sort": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "integer"
-                }
-            }
-        },
-        "report_controller.ExcelInfoVo": {
-            "type": "object",
-            "properties": {
-                "companyId": {
-                    "type": "integer"
-                },
-                "createAt": {
-                    "description": "创建时间",
-                    "type": "string"
-                },
-                "id": {
-                    "description": "id",
-                    "type": "string"
-                },
-                "name": {
-                    "description": "文件名称",
-                    "type": "string",
-                    "example": "test.xlsx"
-                },
-                "ossKey": {
-                    "type": "string"
-                },
-                "projectId": {
-                    "type": "string"
-                },
-                "sheets": {
-                    "description": "工作簿信息",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/report_controller.ExcelSheetVo"
-                    }
-                },
-                "updateAt": {
-                    "description": "最近更新",
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "integer"
-                }
-            }
-        },
-        "report_controller.ExcelSheetVo": {
-            "type": "object",
-            "properties": {
-                "fileName": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "oss": {
-                    "type": "string"
-                },
-                "sheetName": {
-                    "type": "string"
-                }
-            }
-        },
-        "report_controller.FieldColumnLoopAddReq": {
-            "type": "object",
-            "required": [
-                "fieldId"
-            ],
-            "properties": {
-                "columnName": {
-                    "description": "列名。用于循环report_word_filter表中sheet_id字段对应工作表的经过筛选后的数据时候，取column_name列的值",
-                    "type": "string"
-                },
-                "fieldId": {
-                    "description": "域id",
-                    "type": "string"
-                }
-            }
-        },
-        "report_controller.FieldCountInfoVo": {
-            "type": "object",
-            "properties": {
-                "hasRel": {
-                    "description": "有引用",
-                    "type": "integer",
-                    "example": 8
-                },
-                "noRel": {
-                    "description": "无引用",
-                    "type": "integer",
-                    "example": 2
-                },
-                "total": {
-                    "description": "总数",
-                    "type": "integer",
-                    "example": 10
-                }
-            }
-        },
-        "report_controller.FieldFilterDto": {
-            "type": "object",
-            "required": [
-                "columnName",
-                "columnType",
-                "logic",
-                "value"
-            ],
-            "properties": {
-                "columnName": {
-                    "description": "列名称",
-                    "type": "string"
-                },
-                "columnType": {
-                    "description": "列数据类型",
-                    "type": "integer"
-                },
-                "logic": {
-                    "description": "逻辑",
-                    "type": "integer"
-                },
-                "value": {
-                    "description": "值",
-                    "type": "string"
-                }
-            }
-        },
-        "report_controller.FieldFilterSortAddReq": {
-            "type": "object",
-            "required": [
-                "fieldId"
-            ],
-            "properties": {
-                "columnName": {
-                    "description": "取值列名",
-                    "type": "string"
-                },
-                "fieldId": {
-                    "description": "域id",
-                    "type": "string"
-                },
-                "filter": {
-                    "description": "过滤信息",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/report_controller.FieldFilterDto"
-                    }
-                },
-                "rank": {
-                    "description": "表示取第rank项数据，1起始",
-                    "type": "integer"
-                },
-                "sheetId": {
-                    "description": "工作簿id",
-                    "type": "string"
-                },
-                "sortByColumnName": {
-                    "description": "排序字段名",
-                    "type": "string"
-                },
-                "sortOrder": {
-                    "description": "true=升序 false=降序",
-                    "type": "boolean"
-                }
-            }
-        },
-        "report_controller.FieldFilterSortAddResult": {
-            "type": "object",
-            "required": [
-                "cellName",
-                "cellValue"
-            ],
-            "properties": {
-                "cellName": {
-                    "description": "经过筛选和排序等逻辑后，选中的单元格名称, 如\"A1\"。主要用于前端回显高亮sheet表中的选中单元格",
-                    "type": "string",
-                    "example": "A1"
-                },
-                "cellValue": {
-                    "description": "值",
-                    "type": "string"
-                }
-            }
-        },
-        "report_controller.FieldInfoVo": {
-            "type": "object",
-            "properties": {
-                "cellName": {
-                    "description": "绑定的单元格编号",
-                    "type": "string"
-                },
-                "columnName": {
-                    "description": "排序筛选取值时: 取值列名; 按列明循环（批量报告）时: 取值列名",
-                    "type": "string"
-                },
-                "createAt": {
-                    "description": "创建时间",
-                    "type": "string"
-                },
-                "excelId": {
-                    "type": "string"
-                },
-                "excelName": {
-                    "type": "string"
-                },
-                "fieldType": {
-                    "description": "字符型域取值类型",
-                    "type": "integer"
-                },
-                "filename": {
-                    "description": "原始文件名",
-                    "type": "string"
-                },
-                "filter": {
-                    "description": "filter 信息: var筛选排序、table、chart时有意义",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/report_controller.FieldFilterDto"
-                    }
-                },
-                "hasFile": {
-                    "description": "是否有文件",
-                    "type": "boolean"
-                },
-                "id": {
-                    "description": "id",
-                    "type": "string"
-                },
-                "name": {
-                    "description": "变量名",
-                    "type": "string"
-                },
-                "ossKey": {
-                    "type": "string"
-                },
-                "rank": {
-                    "description": "排序筛选取值时: 表示取第rank项数据，1起始",
-                    "type": "integer"
-                },
-                "sheetId": {
-                    "type": "string"
-                },
-                "sheetName": {
-                    "type": "string"
-                },
-                "sortByColumnName": {
-                    "description": "排序筛选取值时: 按照排序的列名称",
-                    "type": "string"
-                },
-                "sortOrder": {
-                    "description": "排序筛选取值时: true=升序 false=降序",
-                    "type": "boolean"
-                },
-                "startC": {
-                    "description": "x轴坐标",
-                    "type": "integer"
-                },
-                "startR": {
-                    "description": "y轴坐标",
-                    "type": "integer"
-                },
-                "substitutionType": {
-                    "description": "MERGEFIELD、IMAGE、TABLE、CHART",
-                    "type": "string"
-                },
-                "tableColumns": {
-                    "description": "table和chart类型时的表头",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "value": {
-                    "description": "TODO 列表查询Value效率低，如果客户端不需要一次性查询所有域名及其各个域名的经过计算后的Value，则推荐通过fieldId查询详情接口获取Value",
-                    "type": "string"
-                },
-                "wordId": {
-                    "description": "word id",
-                    "type": "string"
-                },
-                "wordName": {
-                    "description": "word name",
-                    "type": "string"
-                }
-            }
-        },
-        "report_controller.FieldItemVo": {
-            "type": "object",
-            "properties": {
-                "cellName": {
-                    "description": "绑定的单元格编号",
-                    "type": "string"
-                },
-                "createAt": {
-                    "description": "创建时间",
-                    "type": "string"
-                },
-                "excelId": {
-                    "type": "string"
-                },
-                "excelName": {
-                    "type": "string"
-                },
-                "fieldType": {
-                    "description": "字符型域取值类型",
-                    "type": "integer"
-                },
-                "filename": {
-                    "description": "原始文件名",
-                    "type": "string"
-                },
-                "hasFile": {
-                    "description": "是否有文件",
-                    "type": "boolean"
-                },
-                "id": {
-                    "description": "id",
-                    "type": "string"
-                },
-                "name": {
-                    "description": "变量名",
-                    "type": "string"
-                },
-                "ossKey": {
-                    "type": "string"
-                },
-                "sheetId": {
-                    "type": "string"
-                },
-                "sheetName": {
-                    "type": "string"
-                },
-                "startC": {
-                    "description": "x轴坐标",
-                    "type": "integer"
-                },
-                "startR": {
-                    "description": "y轴坐标",
-                    "type": "integer"
-                },
-                "substitutionType": {
-                    "description": "MERGEFIELD、IMAGE、TABLE、CHART",
-                    "type": "string"
-                },
-                "value": {
-                    "description": "TODO 列表查询Value效率低，如果客户端不需要一次性查询所有域名及其各个域名的经过计算后的Value，则推荐通过fieldId查询详情接口获取Value",
-                    "type": "string"
-                },
-                "wordId": {
-                    "description": "word id",
-                    "type": "string"
-                },
-                "wordName": {
-                    "description": "word name",
-                    "type": "string"
-                }
-            }
-        },
-        "report_controller.FieldUpdateRelCellTableChartReq": {
-            "type": "object",
-            "required": [
-                "fieldId"
-            ],
-            "properties": {
-                "fieldId": {
-                    "description": "域id",
-                    "type": "string"
-                },
-                "filter": {
-                    "description": "条件",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/report_controller.FieldFilterDto"
-                    }
-                },
-                "sheetId": {
-                    "description": "工作簿id",
-                    "type": "string"
-                },
-                "tableColumns": {
-                    "description": "用户所选择的列名",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            }
-        },
-        "report_controller.FieldUpdateRelCellTableChartResult": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "description": "筛选后的表格数据回显",
-                    "type": "array",
-                    "items": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "report_controller.ProjectInfoVo": {
-            "type": "object",
-            "properties": {
-                "createAt": {
-                    "description": "创建时间",
-                    "type": "string"
-                },
-                "id": {
-                    "description": "id",
-                    "type": "string"
-                },
-                "name": {
-                    "description": "名称",
-                    "type": "string"
-                },
-                "note": {
-                    "description": "备注",
-                    "type": "string"
-                }
-            }
-        },
-        "report_controller.SheetFilterDataReq": {
-            "type": "object",
-            "required": [
-                "sheetId"
-            ],
-            "properties": {
-                "filter": {
-                    "description": "filter",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/report_controller.SheetFilterDataReqFilter"
-                    }
-                },
-                "sheetId": {
-                    "description": "工作簿id",
-                    "type": "string"
-                }
-            }
-        },
-        "report_controller.SheetFilterDataReqFilter": {
-            "type": "object",
-            "required": [
-                "columnName",
-                "columnType",
-                "logic",
-                "value"
-            ],
-            "properties": {
-                "columnName": {
-                    "description": "列名称",
-                    "type": "string"
-                },
-                "columnType": {
-                    "description": "列数据类型",
-                    "type": "integer"
-                },
-                "logic": {
-                    "description": "逻辑",
-                    "type": "integer"
-                },
-                "value": {
-                    "description": "值",
-                    "type": "string"
-                }
-            }
-        },
-        "report_controller.WordFilterDto": {
-            "type": "object",
-            "required": [
-                "columnName",
-                "columnType",
-                "logic",
-                "value"
-            ],
-            "properties": {
-                "columnName": {
-                    "description": "列名称",
-                    "type": "string"
-                },
-                "columnType": {
-                    "description": "列数据类型",
-                    "type": "integer"
-                },
-                "logic": {
-                    "description": "逻辑",
-                    "type": "integer"
-                },
-                "value": {
-                    "description": "值",
-                    "type": "string"
-                }
-            }
-        },
-        "report_controller.WordFilterListVo": {
-            "type": "object",
-            "properties": {
-                "excelId": {
-                    "type": "string"
-                },
-                "excelName": {
-                    "type": "string"
-                },
-                "filters": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/report_controller.WordFilterDto"
-                    }
-                },
-                "sheetId": {
-                    "type": "string"
-                },
-                "wordId": {
-                    "type": "string"
-                }
-            }
-        },
-        "report_controller.WordFilterUpdateReq": {
-            "type": "object",
-            "required": [
-                "wordId"
-            ],
-            "properties": {
-                "filter": {
-                    "description": "过滤信息，不传或者传空则表示全部删除",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/report_controller.WordFilterDto"
-                    }
-                },
-                "sheetId": {
-                    "description": "工作簿id",
-                    "type": "string"
-                },
-                "wordId": {
-                    "description": "word id",
-                    "type": "string"
-                }
-            }
-        },
-        "report_service.ExcelItemVo": {
-            "type": "object",
-            "properties": {
-                "companyId": {
-                    "type": "integer"
-                },
-                "createAt": {
-                    "description": "创建时间",
-                    "type": "string"
-                },
-                "id": {
-                    "description": "id",
-                    "type": "string"
-                },
-                "name": {
-                    "description": "文件名称",
-                    "type": "string"
-                },
-                "ossKey": {
-                    "type": "string"
-                },
-                "projectId": {
-                    "type": "string"
-                },
-                "projectName": {
-                    "description": "所属项目名称",
-                    "type": "string"
-                },
-                "projectNote": {
-                    "description": "所属项目备注",
-                    "type": "string"
-                },
-                "updateAt": {
-                    "description": "最近更新",
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "integer"
-                }
-            }
-        },
-        "report_service.ExcelPageResp": {
-            "type": "object",
-            "properties": {
-                "current": {
-                    "type": "integer"
-                },
-                "items": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/report_service.ExcelItemVo"
-                    }
-                },
-                "pages": {
-                    "type": "integer"
-                },
-                "size": {
-                    "type": "integer"
-                },
-                "total": {
-                    "type": "integer"
-                }
-            }
-        },
-        "report_service.ProjectItemVo": {
-            "type": "object",
-            "properties": {
-                "companyId": {
-                    "type": "integer"
-                },
-                "createAt": {
-                    "description": "创建时间",
-                    "type": "string"
-                },
-                "id": {
-                    "description": "id",
-                    "type": "string"
-                },
-                "name": {
-                    "description": "项目名称",
-                    "type": "string"
-                },
-                "note": {
-                    "description": "备注",
-                    "type": "string"
-                },
-                "status": {
-                    "description": "状态",
-                    "type": "integer"
-                },
-                "userId": {
-                    "type": "integer"
-                }
-            }
-        },
-        "report_service.ProjectPageResp": {
-            "type": "object",
-            "properties": {
-                "current": {
-                    "type": "integer"
-                },
-                "items": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/report_service.ProjectItemVo"
-                    }
-                },
-                "pages": {
-                    "type": "integer"
-                },
-                "size": {
-                    "type": "integer"
-                },
-                "total": {
-                    "type": "integer"
-                }
-            }
-        },
-        "report_service.WordItemVo": {
-            "type": "object",
-            "properties": {
-                "companyId": {
-                    "type": "integer"
-                },
-                "createAt": {
-                    "description": "创建时间",
-                    "type": "string"
-                },
-                "cron": {
-                    "type": "string"
-                },
-                "id": {
-                    "description": "id",
-                    "type": "string"
-                },
-                "lastScheduleAt": {
-                    "type": "string"
-                },
-                "name": {
-                    "description": "文件名称",
-                    "type": "string"
-                },
-                "ossKey": {
-                    "type": "string"
-                },
-                "projectId": {
-                    "type": "string"
-                },
-                "projectName": {
-                    "description": "所属项目名称",
-                    "type": "string"
-                },
-                "projectNote": {
-                    "description": "所属项目备注",
-                    "type": "string"
-                },
-                "rawOssKey": {
-                    "type": "string"
-                },
-                "updateAt": {
-                    "description": "最近更新",
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "integer"
-                }
-            }
-        },
-        "report_service.WordPageResp": {
-            "type": "object",
-            "properties": {
-                "current": {
-                    "type": "integer"
-                },
-                "items": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/report_service.WordItemVo"
-                    }
-                },
-                "pages": {
-                    "type": "integer"
-                },
-                "size": {
-                    "type": "integer"
-                },
-                "total": {
-                    "type": "integer"
-                }
-            }
-        },
-        "seg_controller.SegJobRerunReq": {
-            "type": "object",
-            "required": [
-                "ids"
-            ],
-            "properties": {
-                "ids": {
-                    "description": "ids",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            }
-        }
-    },
-    "securityDefinitions": {
-        "AuthorizationHeader": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
-        },
-        "IssuerHeader": {
-            "type": "apiKey",
-            "name": "Issuer",
-            "in": "header"
         }
     }
 }
