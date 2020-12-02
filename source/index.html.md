@@ -2,8 +2,12 @@
 title: 报告生成 API v1.4.8
 language_tabs:
   - javascript: JavaScript
+  - go: Go
+  - java: Java
 language_clients:
   - javascript: ""
+  - go: ""
+  - java: ""
 toc_footers: []
 includes: []
 search: false
@@ -67,6 +71,49 @@ fetch('http://gateway.cac7d791610d6444899e9153f4f3a74d7.cn-beijing.alicontainer.
 }).then(function(body) {
     console.log(body);
 });
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Content-Type": []string{"application/json"},
+        "Accept": []string{"*/*"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "http://gateway.cac7d791610d6444899e9153f4f3a74d7.cn-beijing.alicontainer.com/word/preview", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+```java
+URL obj = new URL("http://gateway.cac7d791610d6444899e9153f4f3a74d7.cn-beijing.alicontainer.com/word/preview?templateUrl=string");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
 
 ```
 
@@ -176,6 +223,49 @@ fetch('http://gateway.cac7d791610d6444899e9153f4f3a74d7.cn-beijing.alicontainer.
 
 ```
 
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Content-Type": []string{"application/json"},
+        "Accept": []string{"*/*"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "http://gateway.cac7d791610d6444899e9153f4f3a74d7.cn-beijing.alicontainer.com/word", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+```java
+URL obj = new URL("http://gateway.cac7d791610d6444899e9153f4f3a74d7.cn-beijing.alicontainer.com/word");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
 `POST /word`
 
 > Body parameter
@@ -263,6 +353,48 @@ fetch('http://gateway.cac7d791610d6444899e9153f4f3a74d7.cn-beijing.alicontainer.
 
 ```
 
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Accept": []string{"*/*"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("GET", "http://gateway.cac7d791610d6444899e9153f4f3a74d7.cn-beijing.alicontainer.com/download/oss", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+```java
+URL obj = new URL("http://gateway.cac7d791610d6444899e9153f4f3a74d7.cn-beijing.alicontainer.com/download/oss?url=string");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("GET");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
 `GET /download/oss`
 
 <h3 id="oss-parameters">Parameters</h3>
@@ -315,6 +447,49 @@ fetch('http://gateway.cac7d791610d6444899e9153f4f3a74d7.cn-beijing.alicontainer.
 }).then(function(body) {
     console.log(body);
 });
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Content-Type": []string{"application/json"},
+        "Accept": []string{"*/*"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "http://gateway.cac7d791610d6444899e9153f4f3a74d7.cn-beijing.alicontainer.com/converter/word2html", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+```java
+URL obj = new URL("http://gateway.cac7d791610d6444899e9153f4f3a74d7.cn-beijing.alicontainer.com/converter/word2html");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
 
 ```
 
@@ -374,6 +549,48 @@ fetch('http://gateway.cac7d791610d6444899e9153f4f3a74d7.cn-beijing.alicontainer.
 
 ```
 
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Accept": []string{"*/*"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("GET", "http://gateway.cac7d791610d6444899e9153f4f3a74d7.cn-beijing.alicontainer.com/converter/template", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+```java
+URL obj = new URL("http://gateway.cac7d791610d6444899e9153f4f3a74d7.cn-beijing.alicontainer.com/converter/template?url=string");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("GET");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
 `GET /converter/template`
 
 <h3 id="template-parameters">Parameters</h3>
@@ -424,6 +641,49 @@ fetch('http://gateway.cac7d791610d6444899e9153f4f3a74d7.cn-beijing.alicontainer.
 }).then(function(body) {
     console.log(body);
 });
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Content-Type": []string{"application/json"},
+        "Accept": []string{"*/*"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "http://gateway.cac7d791610d6444899e9153f4f3a74d7.cn-beijing.alicontainer.com/converter/word2html/rich", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+```java
+URL obj = new URL("http://gateway.cac7d791610d6444899e9153f4f3a74d7.cn-beijing.alicontainer.com/converter/word2html/rich");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
 
 ```
 
@@ -480,6 +740,48 @@ fetch('http://gateway.cac7d791610d6444899e9153f4f3a74d7.cn-beijing.alicontainer.
 }).then(function(body) {
     console.log(body);
 });
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Accept": []string{"*/*"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("GET", "http://gateway.cac7d791610d6444899e9153f4f3a74d7.cn-beijing.alicontainer.com/converter/parseWord", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+```java
+URL obj = new URL("http://gateway.cac7d791610d6444899e9153f4f3a74d7.cn-beijing.alicontainer.com/converter/parseWord?url=string");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("GET");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
 
 ```
 
